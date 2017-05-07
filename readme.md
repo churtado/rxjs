@@ -1,0 +1,1 @@
+To run any of the exercises here, just add the script as the main entry point to the webpack config file
