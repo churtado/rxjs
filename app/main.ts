@@ -46,20 +46,27 @@ var responseStream: Observable<GitHubUser[]> = requestOnRefreshStream.merge(star
 function createSuggestionStream(responseStream: Observable<GitHubUser[]>) {
     return responseStream.map((listUser: GitHubUser[]) => {
         return listUser[Math.floor(Math.random()*listUser.length)];    
-    })
+    }).startWith(null);
 }
 
 var suggestion1Stream:Observable<GitHubUser> = createSuggestionStream(responseStream);
 var suggestion2Stream:Observable<GitHubUser> = createSuggestionStream(responseStream);
 var suggestion3Stream:Observable<GitHubUser> = createSuggestionStream(responseStream);
 
-function renderSuggestion(userData: GitHubUser, selector:string): void {
-    var element  = document.querySelector(selector);
-    var usernameEl = element.querySelector('.username');
-    usernameEl.setAttribute('href', userData.html_url);
-    usernameEl.textContent = userData.login;
-    var imgEl = element.querySelector('img');
-    imgEl.src = userData.avatar_url;
+function renderSuggestion(suggestedUser: GitHubUser, selector:string): void {
+    var suggestionEl: Element  = document.querySelector(selector);
+    if (suggestedUser === null) {
+        suggestionEl.setAttribute("style","visibility:hidden");
+    }else{
+        suggestionEl.setAttribute("style","visibility:visible");
+        var usernameEl = suggestionEl.querySelector('.username');
+        usernameEl.setAttribute('href', suggestedUser.html_url);
+        usernameEl.textContent = suggestedUser.login;
+        var imgEl = suggestionEl.querySelector('img');
+        imgEl.src = "";
+        imgEl.src = suggestedUser.avatar_url;
+    }
+    
 }
 
 suggestion1Stream.subscribe((user:GitHubUser) => {
