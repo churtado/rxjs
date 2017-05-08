@@ -52,14 +52,14 @@ function renderSuggestion(userData: GitHubUser, selector:string): void {
     imgEl.src = userData.avatar_url;
 }
 
-suggestion1Stream.subscribe(user => {
+suggestion1Stream.subscribe((user:GitHubUser) => {
     renderSuggestion(user, '.suggestion1');
 });
 
-suggestion2Stream.subscribe(user => {
+suggestion2Stream.subscribe((user:GitHubUser) => {
     renderSuggestion(user, '.suggestion2');
 });
 
-suggestion3Stream.subscribe(user => {
+suggestion3Stream.subscribe((user:GitHubUser) => {
     renderSuggestion(user, '.suggestion3');
 });
