@@ -29,29 +29,37 @@ var responseStream: Observable<GitHubUser[]> = requestStream
         Rx.Observable.fromPromise(Promise.resolve<GitHubUser[]>($.getJSON(requestUrl)))
     );
 
-responseStream.subscribe( (response: GitHubUser[]) => {
+/*responseStream.subscribe( (response: GitHubUser[]) => {
     console.log(response[0]);
-})
+})*/
 
 function createSuggestionStream(responseStream: Observable<GitHubUser[]>) {
     return responseStream.map((listUser: GitHubUser[]) => {
-        listUser[Math.floor(Math.random()*listUser.length)];    
+        return listUser[Math.floor(Math.random()*listUser.length)];    
     })
 }
 
-var suggestion1Stream = createSuggestionStream(responseStream);
-var suggestion2Stream = createSuggestionStream(responseStream);
-var suggestion3Stream = createSuggestionStream(responseStream);
+var suggestion1Stream:Observable<GitHubUser> = createSuggestionStream(responseStream);
+var suggestion2Stream:Observable<GitHubUser> = createSuggestionStream(responseStream);
+var suggestion3Stream:Observable<GitHubUser> = createSuggestionStream(responseStream);
 
-/*function renderSuggestion(userData: GitHubUser, selector:string): void {
+function renderSuggestion(userData: GitHubUser, selector:string): void {
     var element  = document.querySelector(selector);
     var usernameEl = element.querySelector('.username');
     usernameEl.setAttribute('href', userData.html_url);
     usernameEl.textContent = userData.login;
     var imgEl = element.querySelector('img');
     imgEl.src = userData.avatar_url;
-}*/
+}
 
-/*suggestion1Stream.subscribe(user => {
+suggestion1Stream.subscribe(user => {
     renderSuggestion(user, '.suggestion1');
-})*/
+});
+
+suggestion2Stream.subscribe(user => {
+    renderSuggestion(user, '.suggestion2');
+});
+
+suggestion3Stream.subscribe(user => {
+    renderSuggestion(user, '.suggestion3');
+});
