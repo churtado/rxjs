@@ -1,1 +1,7 @@
-To run any of the exercises here, just add the script as the main entry point to the webpack config file
+This is the github user list example from https://gist.github.com/staltz/868e7e9bc2a7b8c1f754.
+
+It's been rewritten in typescript, and it uses webpack and yarn.
+
+Clone it, run yarn to install dependencies, and in the console write "npm run start".
+
+To install yarn, it's "npm install --save-dev yarn".
