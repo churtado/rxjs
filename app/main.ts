@@ -22,9 +22,19 @@ interface GitHubUser {
     url: string;
 }
 
-var requestStream: Observable<string> = Rx.Observable.of('http://api.github.com/users');
+var refreshButton: Element = document.querySelector('.refresh');
 
-var responseStream: Observable<GitHubUser[]> = requestStream
+var refreshClickStream: Observable<any> = Rx.Observable.fromEvent(refreshButton, 'click');
+
+var startupRequestStream = Rx.Observable.of('https://api.github.com/users');
+
+var requestOnRefreshStream = refreshClickStream
+    .map((ev: MouseEvent) => {
+        var randomOffset = Math.floor(Math.random()*500);
+        return 'https://api.github.com/users?since=' + randomOffset;
+    });
+
+var responseStream: Observable<GitHubUser[]> = requestOnRefreshStream.merge(startupRequestStream)
     .flatMap(requestUrl =>
         Rx.Observable.fromPromise(Promise.resolve<GitHubUser[]>($.getJSON(requestUrl)))
     );
